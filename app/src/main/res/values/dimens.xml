@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="letter_size">60dp</dimen>
+    <dimen name="letter_margin">2dp</dimen>
+    <dimen name="letter_text_size">40sp</dimen>
+    <dimen name="general_user_margin">2dp</dimen>
+    <dimen name="user_image_size">60dp</dimen>
+    <dimen name="user_info_padding">10dp</dimen>
+    <dimen name="ll_edit_user_margin">2dp</dimen>
+    <dimen name="iv_edit_delete_margin">5dp</dimen>
+    <dimen name="separate_line_height">0.3dp</dimen>
+    <dimen name="separate_line_margin">5dp</dimen>
+    <dimen name="button_margin">5dp</dimen>
+    <dimen name="button_text_size">16sp</dimen>
+    <dimen name="rv_size">0dp</dimen>
+    <dimen name="tb_size">18sp</dimen>
+
+</resources>
