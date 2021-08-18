@@ -14,5 +14,9 @@
     <dimen name="button_text_size">16sp</dimen>
     <dimen name="rv_size">0dp</dimen>
     <dimen name="tb_size">18sp</dimen>
-
+    <dimen name="dialog_margin">5dp</dimen>
+    <dimen name="dialog_text_size_btn">20sp</dimen>
+    <dimen name="dialog_padding_btn">2dp</dimen>
+    <dimen name="dialog_width">350dp</dimen>
+    <dimen name="button_margin_2">5dp</dimen>
 </resources>

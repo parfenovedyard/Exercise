@@ -4,10 +4,12 @@ package com.example.exercises.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exercises.models.PhoneBookUser
 import com.example.exercises.R
+import com.example.exercises.databinding.ItemUserBinding
 
 class UserAdapter( private val phoneBook: ArrayList<PhoneBookUser>): RecyclerView.Adapter<UserAdapter.MyViewHolder>(){
 
@@ -34,17 +36,23 @@ class UserAdapter( private val phoneBook: ArrayList<PhoneBookUser>): RecyclerVie
 
 
     class MyViewHolder(view: View): RecyclerView.ViewHolder(view){
+
+        val binding = ItemUserBinding.bind(view)
+
         var firstName: TextView? = null
         var lastName: TextView? = null
         var phone: TextView? = null
         var letter: TextView? = null
+        var editBtn: ImageView? = null
+        var deleteBtn: ImageView? = null
 
         init {
-            firstName = view.findViewById(R.id.tv_firstName)
-            lastName = view.findViewById(R.id.tv_lastName)
-            phone = view.findViewById(R.id.tv_phoneNumber)
-            letter = view.findViewById(R.id.tv_letter)
-
+            firstName = binding.tvFirstName
+            lastName = binding.tvLastName
+            phone = binding.tvPhoneNumber
+            letter = binding.tvLetter
+            editBtn = binding.ivEdit
+            deleteBtn = binding.ivDelete
         }
     }
 }

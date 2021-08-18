@@ -64,9 +64,9 @@ class PhoneBookActivity : BaseActivity() {
     }
     private fun getRandomPhoneArray(): ArrayList<PhoneBookUser> {
         val usersPhoneBook: ArrayList<PhoneBookUser> = arrayListOf()
-        for (i in 0 until 10) {     // тут задаем количесвто людей в книге
+        for (i in 1 .. 10) {     // тут задаем количесвто людей в книге
             usersPhoneBook.add(
-                PhoneBookUser(getRandomFirstNameFromTxt(firstNames),
+                PhoneBookUser(i,getRandomFirstNameFromTxt(firstNames),
                 getRandomLastNameFromTxt(lastNames), getRandomNumber())
             )
         }

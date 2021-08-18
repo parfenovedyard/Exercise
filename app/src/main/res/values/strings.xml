@@ -13,5 +13,8 @@
     <string name="tb_start_screen">START SCREEN</string>
     <string name="tb_db_screen">DATA BASE SCREEN</string>
     <string name="tb_new_book_screen">NEW PHONE BOOK SCREEN</string>
+    <string name="edit">Edit</string>
+    <string name="cancel">Cancel</string>
+
 
 </resources>
