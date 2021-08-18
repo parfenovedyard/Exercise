@@ -7,7 +7,6 @@ import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exercises.DataBaseHelper
-import com.example.exercises.R
 import com.example.exercises.adapters.UserDbAdapter
 import com.example.exercises.databinding.ActivityDataBaseBinding
 import com.example.exercises.databinding.DialogEditBinding
@@ -16,6 +15,7 @@ import com.example.exercises.models.PhoneBookUser
 class DataBaseActivity : BaseActivity() {
 
     private lateinit var binding: ActivityDataBaseBinding
+    private lateinit var adapter: UserDbAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,19 +27,17 @@ class DataBaseActivity : BaseActivity() {
         val recyclerView: RecyclerView = binding.rvDataBase
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val adapter = UserDbAdapter(usersPhoneBook,
+        adapter = UserDbAdapter(usersPhoneBook,
             {
                 dialogEditUser(it)
             },{
-                Log.e("ooops", it.lastName)
+                Log.e("ups", it.lastName)
             })
         recyclerView.adapter = adapter
 
         setupActionBar(binding.tbDb)
 
-
     }
-
 
     private fun getDataFromDb(): ArrayList<PhoneBookUser> {
         val list = ArrayList<PhoneBookUser>()
@@ -72,7 +70,6 @@ class DataBaseActivity : BaseActivity() {
         binding.etPhone.setText(user.phone)
 
         val phoneBook = getDataFromDb()
-        val adapter = UserDbAdapter(phoneBook, {}, {})
 
         binding.tvBtnEdit.setOnClickListener {
             val firstName = binding.etFirstName.text.toString()
@@ -81,11 +78,10 @@ class DataBaseActivity : BaseActivity() {
 
             if (firstName.isNotEmpty() && lastName.isNotEmpty() && phone.isNotEmpty()) {
                 phoneBook[user.id - 1] = PhoneBookUser(user.id, firstName, lastName, phone)
-                val recyclerView: RecyclerView = findViewById(R.id.rv_data_base)
-                recyclerView.adapter = adapter
-                adapter.notifyItemChanged(user.id)
+                adapter.phoneBook = phoneBook
+                adapter.notifyDataSetChanged()
 
-                Log.e("ooops", firstName + user.id)
+                Log.e("ups", firstName + user.id)
 
                 dialog.dismiss()
             }

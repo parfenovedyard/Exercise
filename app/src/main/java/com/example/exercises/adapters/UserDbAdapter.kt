@@ -8,9 +8,9 @@ import com.example.exercises.R
 import com.example.exercises.models.PhoneBookUser
 
 class UserDbAdapter (
-    private val phoneBook: ArrayList<PhoneBookUser>,
-    private val onEditClick: (PhoneBookUser) -> Unit,
-    private val onDeleteClick: (PhoneBookUser) -> Unit
+     var phoneBook: ArrayList<PhoneBookUser>,
+     var onEditClick: (PhoneBookUser) -> Unit,
+     var onDeleteClick: (PhoneBookUser) -> Unit
 ): RecyclerView.Adapter<UserAdapter.MyViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserAdapter.MyViewHolder {
