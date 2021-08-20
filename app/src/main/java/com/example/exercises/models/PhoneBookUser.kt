@@ -5,5 +5,5 @@ data class PhoneBookUser(
     val firstName: String,
     val lastName: String,
     val phone: String,
-    val image: String
+    var image: String
     )

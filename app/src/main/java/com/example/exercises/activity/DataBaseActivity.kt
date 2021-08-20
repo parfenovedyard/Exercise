@@ -14,9 +14,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.exercises.DataBaseHelper
-import com.example.exercises.R
 import com.example.exercises.adapters.UserDbAdapter
 import com.example.exercises.databinding.ActivityDataBaseBinding
 import com.example.exercises.databinding.DialogEditBinding
@@ -33,7 +31,7 @@ class DataBaseActivity : BaseActivity() {
     private lateinit var adapter: UserDbAdapter
     private lateinit var db: SQLiteDatabase
     private var usersPhoneBook: ArrayList<PhoneBookUser> = ArrayList()
-    private var photoFromCamera: Uri? = null
+    private var photoFromGallery: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +50,7 @@ class DataBaseActivity : BaseActivity() {
                 deleteUser(it)
             },{
                 choosePhotoFromGallery()
+                setUserImage(it)
             })
         recyclerView.adapter = adapter
 
@@ -180,15 +179,28 @@ class DataBaseActivity : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
           if (requestCode == GALLERY) {
-                photoFromCamera = data!!.data
-
-                Glide.with(this)
-                    .load(photoFromCamera)
-                    .centerCrop()
-                    .placeholder(R.drawable.ic_person_24)
-                    .into(findViewById(R.id.iv_user_image))
+              photoFromGallery = data!!.data
+              Log.e("ups", photoFromGallery.toString())
             }
         }
+    }
+
+    private fun setUserImage(user: PhoneBookUser) {
+
+        Log.e("ups", user.firstName + photoFromGallery.toString())
+        val values = ContentValues().apply {
+            put(DataBaseHelper.IMAGE, photoFromGallery.toString())
+        }
+
+        db.update(
+            DataBaseHelper.TABLE_NAME,
+            values,
+            "${DataBaseHelper.COLUMN_ID} = ?",
+            arrayOf(user.id.toString())
+        )
+        usersPhoneBook[user.id].image = photoFromGallery.toString()
+
+        adapter.notifyDataSetChanged()
     }
 
     companion object{

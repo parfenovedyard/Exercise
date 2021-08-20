@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.exercises.R
 import com.example.exercises.models.PhoneBookUser
 
@@ -11,11 +12,13 @@ class UserDbAdapter (
      var phoneBook: ArrayList<PhoneBookUser>,
      var onEditClick: (PhoneBookUser) -> Unit,
      var onDeleteClick: (PhoneBookUser) -> Unit,
-     var onImageClick: () -> Unit
+     var onImageClick: (PhoneBookUser) -> Unit
 ): RecyclerView.Adapter<UserAdapter.MyViewHolder>(){
 
+    private lateinit var itemView: View
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserAdapter.MyViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
+        itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_user, parent, false)
         return UserAdapter.MyViewHolder(itemView)
 
@@ -40,7 +43,15 @@ class UserDbAdapter (
         }
 
         holder.userImage!!.setOnClickListener {
-            onImageClick()
+            onImageClick(phoneBook[position])
+        }
+
+        if (phoneBook[position].image.isNotEmpty()) {
+            Glide.with(itemView)
+                .load(phoneBook[position].image)
+                .centerCrop()
+                .placeholder(R.drawable.ic_person_24)
+                .into(holder.userImage!!)
         }
     }
 
