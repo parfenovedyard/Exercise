@@ -27,7 +27,7 @@
             android:contentDescription="@string/image_user"
             android:layout_width="@dimen/user_image_size"
             android:layout_height="@dimen/user_image_size"
-            />
+            android:src="@drawable/ic_person_24"/>
 
         <LinearLayout
             android:layout_width="match_parent"

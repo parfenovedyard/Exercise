@@ -11,7 +11,10 @@ import com.example.exercises.models.PhoneBookUser
 import com.example.exercises.R
 import com.example.exercises.databinding.ItemUserBinding
 
-class UserAdapter( private val phoneBook: ArrayList<PhoneBookUser>): RecyclerView.Adapter<UserAdapter.MyViewHolder>(){
+class UserAdapter(
+    private val phoneBook: ArrayList<PhoneBookUser>,
+    var onImageClick: () -> Unit
+    ): RecyclerView.Adapter<UserAdapter.MyViewHolder>(){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -30,6 +33,13 @@ class UserAdapter( private val phoneBook: ArrayList<PhoneBookUser>): RecyclerVie
         holder.firstName!!.text = phoneBook[position].firstName
         holder.lastName!!.text = phoneBook[position].lastName
         holder.phone!!.text = phoneBook[position].phone
+
+        holder.editBtn!!.visibility = View.GONE
+        holder.deleteBtn!!.visibility = View.GONE
+
+        holder.userImage!!.setOnClickListener {
+            onImageClick()
+        }
     }
 
     override fun getItemCount() = phoneBook.size
@@ -45,6 +55,7 @@ class UserAdapter( private val phoneBook: ArrayList<PhoneBookUser>): RecyclerVie
         var letter: TextView? = null
         var editBtn: ImageView? = null
         var deleteBtn: ImageView? = null
+        var userImage: ImageView? = null
 
         init {
             firstName = binding.tvFirstName
@@ -53,6 +64,7 @@ class UserAdapter( private val phoneBook: ArrayList<PhoneBookUser>): RecyclerVie
             letter = binding.tvLetter
             editBtn = binding.ivEdit
             deleteBtn = binding.ivDelete
+            userImage = binding.ivUserImage
         }
     }
 }

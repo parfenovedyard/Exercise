@@ -10,7 +10,8 @@ import com.example.exercises.models.PhoneBookUser
 class UserDbAdapter (
      var phoneBook: ArrayList<PhoneBookUser>,
      var onEditClick: (PhoneBookUser) -> Unit,
-     var onDeleteClick: (PhoneBookUser) -> Unit
+     var onDeleteClick: (PhoneBookUser) -> Unit,
+     var onImageClick: () -> Unit
 ): RecyclerView.Adapter<UserAdapter.MyViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserAdapter.MyViewHolder {
@@ -36,6 +37,10 @@ class UserDbAdapter (
         }
         holder.deleteBtn!!.setOnClickListener {
             onDeleteClick(phoneBook[position])
+        }
+
+        holder.userImage!!.setOnClickListener {
+            onImageClick()
         }
     }
 

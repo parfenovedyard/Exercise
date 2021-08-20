@@ -3,6 +3,7 @@ package com.example.exercises.activity
 import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exercises.*
@@ -16,10 +17,6 @@ class PhoneBookActivity : BaseActivity() {
     private lateinit var binding: ActivityPhoneBookBinding
     private lateinit var firstNames: List<String>
     private lateinit var lastNames: List<String>
-
-
-    //val users = arrayListOf(PhoneBookUser("den", "smith", "820000"),
-       // PhoneBookUser("den", "smith", "820000"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +35,12 @@ class PhoneBookActivity : BaseActivity() {
 
         val recyclerView: RecyclerView = binding.rvRandom
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = UserAdapter(usersPhoneBook)
+        recyclerView.adapter = UserAdapter(usersPhoneBook) {
+            Toast.makeText(this," Unavailable, Please save PhoneBook to DataBase",
+                Toast.LENGTH_LONG).show()
+        }
 
-       binding.btnSaveToBd.setOnClickListener {
+        binding.btnSaveToBd.setOnClickListener {
            addPhoneBookToDB(usersPhoneBook)
            startActivity(Intent(this, DataBaseActivity::class.java))
        }
@@ -67,7 +67,7 @@ class PhoneBookActivity : BaseActivity() {
         for (i in 1 .. 10) {     // тут задаем количесвто людей в книге
             usersPhoneBook.add(
                 PhoneBookUser(i,getRandomFirstNameFromTxt(firstNames),
-                getRandomLastNameFromTxt(lastNames), getRandomNumber())
+                getRandomLastNameFromTxt(lastNames), getRandomNumber(), "")
             )
         }
         usersPhoneBook.sortWith(
@@ -91,6 +91,7 @@ class PhoneBookActivity : BaseActivity() {
             values.put(DataBaseHelper.FIRST_NAME, phoneBook[i].firstName)
             values.put(DataBaseHelper.LAST_NAME, phoneBook[i].lastName)
             values.put(DataBaseHelper.PHONE, phoneBook[i].phone)
+            values.put(DataBaseHelper.IMAGE, phoneBook[i].image)
             db.insert(DataBaseHelper.TABLE_NAME, null, values)
         }
         db.close()

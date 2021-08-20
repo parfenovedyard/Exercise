@@ -12,16 +12,19 @@ class DataBaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+        db?.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
+        db?.execSQL("CREATE TABLE $TABLE_NAME($COLUMN_ID INTEGER PRIMARY KEY, $FIRST_NAME TEXT, $LAST_NAME TEXT, $PHONE TEXT, $IMAGE TEXT)")
     }
 
     companion object{
-        const val DATABASE_VERSION = 1
+        const val DATABASE_VERSION = 3
         const val DATABASE_NAME = "PhoneBook.db"
 
         const val TABLE_NAME = "phonebook"
         const val COLUMN_ID = "_id"
         const val FIRST_NAME = "first_name"
         const val LAST_NAME = "last_name"
+        const val IMAGE = "image"
         const val PHONE = "phone"
     }
 }
