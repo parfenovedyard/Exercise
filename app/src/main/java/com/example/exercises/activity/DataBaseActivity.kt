@@ -2,6 +2,7 @@ package com.example.exercises.activity
 
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.ContentValues
@@ -80,6 +81,7 @@ class DataBaseActivity : BaseActivity() {
         return list
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun dialogEditUser(user: PhoneBookUser) {
         val binding = DialogEditBinding.inflate(layoutInflater)
         val dialog = Dialog(this)
@@ -95,7 +97,8 @@ class DataBaseActivity : BaseActivity() {
             val phone = binding.etPhone.text.toString()
 
             if (firstName.isNotEmpty() && lastName.isNotEmpty() && phone.isNotEmpty()) {
-                usersPhoneBook[user.id - 1] = PhoneBookUser(user.id, firstName, lastName,
+                val index = usersPhoneBook.indexOf(user)
+                usersPhoneBook[index] = PhoneBookUser(user.id, firstName, lastName,
                     phone, user.image)
                 adapter.phoneBook = usersPhoneBook
                 adapter.notifyDataSetChanged()
@@ -114,7 +117,6 @@ class DataBaseActivity : BaseActivity() {
                 )
 
                 dialog.dismiss()
-               // db.close()
             }else{
                 Toast.makeText(this,"Please fill in all fields",
                     Toast.LENGTH_SHORT).show()
@@ -126,21 +128,17 @@ class DataBaseActivity : BaseActivity() {
         dialog.show()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun deleteUser(user: PhoneBookUser) {
         db.delete(
             DataBaseHelper.TABLE_NAME,
             "${DataBaseHelper.COLUMN_ID} = ?",
             arrayOf(user.id.toString())
         )
-        db.close()
+
+        usersPhoneBook = getDataFromDb()
+        adapter.phoneBook = usersPhoneBook
         Log.e("ups", usersPhoneBook[0].firstName)
-
-        //usersPhoneBook.removeAt(user.id - 1)
-       // usersPhoneBook = getDataFromDb()
-        usersPhoneBook.map { getDataFromDb() }.toTypedArray()
-        Log.e("ups", usersPhoneBook[0].firstName)
-
-
         adapter.notifyDataSetChanged()
 
         Toast.makeText(this,"Deleted",
@@ -157,7 +155,7 @@ class DataBaseActivity : BaseActivity() {
                     if(p0!!.areAllPermissionsGranted()){
                         val intent = Intent(Intent.ACTION_PICK,
                             MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                        startActivityForResult(intent, GALLERY)
+                        startActivityForResult(intent, GALLERY,)
                     }
                     if (p0.isAnyPermissionPermanentlyDenied) {
                         Toast.makeText(this@DataBaseActivity,"No permission",
@@ -185,9 +183,13 @@ class DataBaseActivity : BaseActivity() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun setUserImage(user: PhoneBookUser) {
 
+        val index = usersPhoneBook.indexOf(user)
+
         Log.e("ups", user.firstName + photoFromGallery.toString())
+
         val values = ContentValues().apply {
             put(DataBaseHelper.IMAGE, photoFromGallery.toString())
         }
@@ -198,8 +200,8 @@ class DataBaseActivity : BaseActivity() {
             "${DataBaseHelper.COLUMN_ID} = ?",
             arrayOf(user.id.toString())
         )
-        usersPhoneBook[user.id].image = photoFromGallery.toString()
-
+        usersPhoneBook[index].image = photoFromGallery.toString()
+        adapter.phoneBook = usersPhoneBook
         adapter.notifyDataSetChanged()
     }
 
