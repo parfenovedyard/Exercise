@@ -8,12 +8,14 @@ class DataBaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
     null, DATABASE_VERSION) {
 
     override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL("CREATE TABLE $TABLE_NAME($COLUMN_ID INTEGER PRIMARY KEY, $FIRST_NAME TEXT, $LAST_NAME TEXT, $PHONE TEXT)")
+        db?.execSQL("CREATE TABLE $TABLE_NAME($COLUMN_ID INTEGER PRIMARY KEY," +
+                " $FIRST_NAME TEXT, $LAST_NAME TEXT, $PHONE TEXT, $IMAGE TEXT)")
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         db?.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
-        db?.execSQL("CREATE TABLE $TABLE_NAME($COLUMN_ID INTEGER PRIMARY KEY, $FIRST_NAME TEXT, $LAST_NAME TEXT, $PHONE TEXT, $IMAGE TEXT)")
+        db?.execSQL("CREATE TABLE $TABLE_NAME($COLUMN_ID INTEGER PRIMARY KEY," +
+                " $FIRST_NAME TEXT, $LAST_NAME TEXT, $PHONE TEXT, $IMAGE TEXT)")
     }
 
     companion object{
