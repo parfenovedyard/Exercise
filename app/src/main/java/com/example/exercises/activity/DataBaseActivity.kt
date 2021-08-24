@@ -34,8 +34,10 @@ class DataBaseActivity : BaseActivity() {
     private lateinit var binding: ActivityDataBaseBinding
     private lateinit var adapter: UserDbAdapter
     private lateinit var db: SQLiteDatabase
+    private lateinit var mUser: PhoneBookUser
     private var usersPhoneBook: ArrayList<PhoneBookUser> = ArrayList()
-    private var photoFromGallery: Uri? = null
+   // private var photoFromGallery: Uri? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,8 +55,8 @@ class DataBaseActivity : BaseActivity() {
             },{
                 deleteUser(it)
             },{
+                mUser = it
                 choosePhotoFromGallery()
-                setUserImage(it)
             })
         recyclerView.adapter = adapter
 
@@ -145,16 +147,40 @@ class DataBaseActivity : BaseActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteUser(user: PhoneBookUser) {
-        db.delete(
+        /*db.delete(
             DataBaseHelper.TABLE_NAME,
             "${DataBaseHelper.COLUMN_ID} = ?",
             arrayOf(user.id.toString())
-        )
-
+        )*/
         usersPhoneBook = getDataFromDb()
+        usersPhoneBook.remove(user)
+        usersPhoneBook.sortWith(
+            compareBy(
+                { it.firstName.lowercase(Locale.getDefault())},
+                { it.lastName.lowercase(Locale.getDefault())},
+                { it.phone.lowercase(Locale.getDefault())}
+            )
+        )
+        Log.e("ups", usersPhoneBook[user.id].firstName)
+
+        db.execSQL("DELETE FROM ${DataBaseHelper.TABLE_NAME}")
+        val values = ContentValues()
+        for (i in 0 until usersPhoneBook.size){
+            //values.put(DataBaseHelper.COLUMN_ID, usersPhoneBook[i].id)
+            values.put(DataBaseHelper.FIRST_NAME, usersPhoneBook[i].firstName)
+            values.put(DataBaseHelper.LAST_NAME, usersPhoneBook[i].lastName)
+            values.put(DataBaseHelper.PHONE, usersPhoneBook[i].phone)
+            values.put(DataBaseHelper.IMAGE, usersPhoneBook[i].image)
+            db.insert(DataBaseHelper.TABLE_NAME, null, values)
+        }
+
+        adapter.phoneBook = usersPhoneBook
+        adapter.notifyDataSetChanged()
+
+        /*usersPhoneBook = getDataFromDb()
         adapter.phoneBook = usersPhoneBook
         Log.e("ups", usersPhoneBook[0].firstName)
-        adapter.notifyDataSetChanged()
+        adapter.notifyDataSetChanged()*/
 
         Toast.makeText(this,"Deleted",
             Toast.LENGTH_SHORT).show()
@@ -192,30 +218,31 @@ class DataBaseActivity : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
           if (requestCode == GALLERY) {
-              photoFromGallery = data!!.data
-              Log.e("ups", photoFromGallery.toString())
+              //photoFromGallery = data!!.data
+              setUserImage(data!!.data)
+              Log.e("ups", data.data.toString())
             }
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun setUserImage(user: PhoneBookUser) {
+    private fun setUserImage(data: Uri?) {
 
-        val index = usersPhoneBook.indexOf(user)
+        val index = usersPhoneBook.indexOf(mUser)
 
-        Log.e("ups", user.firstName + photoFromGallery.toString())
+        Log.e("ups", mUser.firstName + data.toString())
 
         val values = ContentValues().apply {
-            put(DataBaseHelper.IMAGE, photoFromGallery.toString())
+            put(DataBaseHelper.IMAGE, data.toString())
         }
 
         db.update(
             DataBaseHelper.TABLE_NAME,
             values,
             "${DataBaseHelper.COLUMN_ID} = ?",
-            arrayOf(user.id.toString())
+            arrayOf(mUser.id.toString())
         )
-        usersPhoneBook[index].image = photoFromGallery.toString()
+        usersPhoneBook[index].image = data.toString()
         adapter.phoneBook = usersPhoneBook
         adapter.notifyDataSetChanged()
     }
