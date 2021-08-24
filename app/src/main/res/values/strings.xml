@@ -15,6 +15,6 @@
     <string name="tb_new_book_screen">NEW PHONE BOOK SCREEN</string>
     <string name="edit">Edit</string>
     <string name="cancel">Cancel</string>
-
+    <string name="ADD">ADD</string>
 
 </resources>

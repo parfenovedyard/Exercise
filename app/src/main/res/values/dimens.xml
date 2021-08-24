@@ -19,4 +19,5 @@
     <dimen name="dialog_padding_btn">2dp</dimen>
     <dimen name="dialog_width">350dp</dimen>
     <dimen name="button_margin_2">5dp</dimen>
+    <dimen name="add_user_button_size">40dp</dimen>
 </resources>

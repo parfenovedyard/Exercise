@@ -13,14 +13,15 @@
         tools:ignore="MissingConstraints"
         android:background="@color/my_blue">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="@string/tb_new_book_screen"
-            android:textStyle="bold"
-            android:textSize="@dimen/tb_size"
-            android:textColor="@color/white"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="@string/tb_new_book_screen"
+                android:textStyle="bold"
+                android:textSize="@dimen/tb_size"
+                android:textColor="@color/white"/>
+
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -29,6 +30,7 @@
         android:layout_height="@dimen/rv_size"
         app:layout_constraintBottom_toTopOf="@+id/btn_save_to_bd"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tb_phone_book" />
 

@@ -13,15 +13,32 @@
         tools:ignore="MissingConstraints"
         android:background="@color/my_blue">
 
-        <TextView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="@string/tb_db_screen"
-            android:textStyle="bold"
-            android:textSize="@dimen/tb_size"
-            android:textColor="@color/white"/>
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="@string/tb_db_screen"
+                android:textStyle="bold"
+                android:textSize="@dimen/tb_size"
+                android:textColor="@color/white"/>
+
+            <ImageView
+                android:id="@+id/add_user"
+                android:layout_width="@dimen/add_user_button_size"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_add_24"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.appcompat.widget.Toolbar>
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_data_base"

@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exercises.DataBaseHelper
+import com.example.exercises.R
 import com.example.exercises.adapters.UserDbAdapter
 import com.example.exercises.databinding.ActivityDataBaseBinding
 import com.example.exercises.databinding.DialogEditBinding
@@ -56,6 +57,10 @@ class DataBaseActivity : BaseActivity() {
         recyclerView.adapter = adapter
 
         setupActionBar(binding.tbDb)
+
+        binding.addUser.setOnClickListener {
+            addUser()
+        }
 
     }
 
@@ -203,6 +208,61 @@ class DataBaseActivity : BaseActivity() {
         usersPhoneBook[index].image = photoFromGallery.toString()
         adapter.phoneBook = usersPhoneBook
         adapter.notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun addUser() {
+        val binding = DialogEditBinding.inflate(layoutInflater)
+        val dialog = Dialog(this)
+        dialog.setContentView(binding.root)
+
+        binding.tvBtnEdit.text = resources.getString(R.string.ADD)
+        var newId = getDataFromDb().maxByOrNull { it.id }?.id
+        newId = newId!! + 1
+
+        binding.tvBtnEdit.setOnClickListener {
+            val firstName = binding.etFirstName.text.toString()
+            val lastName = binding.etLastName.text.toString()
+            val phone = binding.etPhone.text.toString()
+
+            if (firstName.isNotEmpty() && lastName.isNotEmpty() && phone.isNotEmpty()) {
+
+                val newUser = PhoneBookUser(newId, firstName, lastName, phone, "")
+                usersPhoneBook = getDataFromDb()
+                usersPhoneBook.add(newUser)
+                usersPhoneBook.sortWith(
+                    compareBy(
+                        { it.firstName },
+                        { it.lastName },
+                        { it.phone }
+                    )
+                )
+                Log.e("ups", usersPhoneBook.toString())
+
+                db.execSQL("DELETE FROM ${DataBaseHelper.TABLE_NAME}")
+                val values = ContentValues()
+                for (i in 0 until usersPhoneBook.size){
+                    values.put(DataBaseHelper.COLUMN_ID, usersPhoneBook[i].id)
+                    values.put(DataBaseHelper.FIRST_NAME, usersPhoneBook[i].firstName)
+                    values.put(DataBaseHelper.LAST_NAME, usersPhoneBook[i].lastName)
+                    values.put(DataBaseHelper.PHONE, usersPhoneBook[i].phone)
+                    values.put(DataBaseHelper.IMAGE, usersPhoneBook[i].image)
+                    db.insert(DataBaseHelper.TABLE_NAME, null, values)
+                }
+
+                adapter.phoneBook = usersPhoneBook
+                adapter.notifyDataSetChanged()
+
+                dialog.dismiss()
+            }else{
+                Toast.makeText(this,"Please fill in all fields",
+                    Toast.LENGTH_SHORT).show()
+            }
+        }
+        binding.tvBtnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 
     companion object{
