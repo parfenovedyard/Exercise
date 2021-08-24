@@ -104,24 +104,32 @@ class DataBaseActivity : BaseActivity() {
             val phone = binding.etPhone.text.toString()
 
             if (firstName.isNotEmpty() && lastName.isNotEmpty() && phone.isNotEmpty()) {
+                usersPhoneBook = getDataFromDb()
                 val index = usersPhoneBook.indexOf(user)
                 usersPhoneBook[index] = PhoneBookUser(user.id, firstName, lastName,
                     phone, user.image)
-                adapter.phoneBook = usersPhoneBook
-                adapter.notifyDataSetChanged()
 
-                val values = ContentValues().apply {
-                    put(DataBaseHelper.FIRST_NAME, firstName)
-                    put(DataBaseHelper.LAST_NAME, lastName)
-                    put(DataBaseHelper.PHONE, phone)
+                usersPhoneBook.sortWith(
+                    compareBy(
+                        { it.firstName.lowercase(Locale.getDefault())},
+                        { it.lastName.lowercase(Locale.getDefault())},
+                        { it.phone.lowercase(Locale.getDefault())}
+                    )
+                )
+
+                db.execSQL("DELETE FROM ${DataBaseHelper.TABLE_NAME}")
+                val values = ContentValues()
+                for (i in 0 until usersPhoneBook.size){
+                    //values.put(DataBaseHelper.COLUMN_ID, usersPhoneBook[i].id)
+                    values.put(DataBaseHelper.FIRST_NAME, usersPhoneBook[i].firstName)
+                    values.put(DataBaseHelper.LAST_NAME, usersPhoneBook[i].lastName)
+                    values.put(DataBaseHelper.PHONE, usersPhoneBook[i].phone)
+                    values.put(DataBaseHelper.IMAGE, usersPhoneBook[i].image)
+                    db.insert(DataBaseHelper.TABLE_NAME, null, values)
                 }
 
-                db.update(
-                    DataBaseHelper.TABLE_NAME,
-                    values,
-                    "${DataBaseHelper.COLUMN_ID} = ?",
-                    arrayOf(user.id.toString())
-                )
+                adapter.phoneBook = usersPhoneBook
+                adapter.notifyDataSetChanged()
 
                 dialog.dismiss()
             }else{
@@ -234,9 +242,9 @@ class DataBaseActivity : BaseActivity() {
                 usersPhoneBook.add(newUser)
                 usersPhoneBook.sortWith(
                     compareBy(
-                        { it.firstName.toLowerCase() },
-                        { it.lastName.toLowerCase()  },
-                        { it.phone.toLowerCase()  }
+                        { it.firstName.lowercase(Locale.getDefault())},
+                        { it.lastName.lowercase(Locale.getDefault())},
+                        { it.phone.lowercase(Locale.getDefault())}
                     )
                 )
                 Log.e("ups", usersPhoneBook[0].toString())
@@ -266,6 +274,7 @@ class DataBaseActivity : BaseActivity() {
         }
         dialog.show()
     }
+
 
     companion object{
         private const val GALLERY = 1

@@ -27,7 +27,9 @@ class UserDbAdapter (
     }
 
     override fun onBindViewHolder(holder: UserAdapter.MyViewHolder, position: Int) {
-        if (position == 0 || phoneBook[position].firstName[0] != phoneBook[position - 1].firstName[0]){
+        if (position == 0
+            || phoneBook[position].firstName[0].lowercaseChar()
+            != phoneBook[position - 1].firstName[0].lowercaseChar()){
             holder.letter!!.visibility = View.VISIBLE
             holder.letter!!.text = phoneBook[position].firstName[0].toString()
                 .uppercase(Locale.getDefault())
