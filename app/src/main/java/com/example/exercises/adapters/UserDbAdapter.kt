@@ -1,5 +1,6 @@
 package com.example.exercises.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,13 +52,12 @@ class UserDbAdapter (
             onImageClick(phoneBook[position])
         }
 
-        if (phoneBook[position].image.isNotEmpty()) {
             Glide.with(itemView)
                 .load(phoneBook[position].image)
                 .centerCrop()
                 .placeholder(R.drawable.ic_person_24)
                 .into(holder.userImage!!)
-        }
+            Log.e("ups", phoneBook[position].image  + phoneBook[position].firstName)
     }
 
     override fun getItemCount() = phoneBook.size

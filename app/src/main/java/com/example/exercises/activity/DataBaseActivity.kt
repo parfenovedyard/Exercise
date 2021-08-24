@@ -106,7 +106,7 @@ class DataBaseActivity : BaseActivity() {
             val phone = binding.etPhone.text.toString()
 
             if (firstName.isNotEmpty() && lastName.isNotEmpty() && phone.isNotEmpty()) {
-                usersPhoneBook = getDataFromDb()
+
                 val index = usersPhoneBook.indexOf(user)
                 usersPhoneBook[index] = PhoneBookUser(user.id, firstName, lastName,
                     phone, user.image)
@@ -147,26 +147,12 @@ class DataBaseActivity : BaseActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteUser(user: PhoneBookUser) {
-        /*db.delete(
-            DataBaseHelper.TABLE_NAME,
-            "${DataBaseHelper.COLUMN_ID} = ?",
-            arrayOf(user.id.toString())
-        )*/
-        usersPhoneBook = getDataFromDb()
+
         usersPhoneBook.remove(user)
-        usersPhoneBook.sortWith(
-            compareBy(
-                { it.firstName.lowercase(Locale.getDefault())},
-                { it.lastName.lowercase(Locale.getDefault())},
-                { it.phone.lowercase(Locale.getDefault())}
-            )
-        )
-        Log.e("ups", usersPhoneBook[user.id].firstName)
 
         db.execSQL("DELETE FROM ${DataBaseHelper.TABLE_NAME}")
         val values = ContentValues()
         for (i in 0 until usersPhoneBook.size){
-            //values.put(DataBaseHelper.COLUMN_ID, usersPhoneBook[i].id)
             values.put(DataBaseHelper.FIRST_NAME, usersPhoneBook[i].firstName)
             values.put(DataBaseHelper.LAST_NAME, usersPhoneBook[i].lastName)
             values.put(DataBaseHelper.PHONE, usersPhoneBook[i].phone)
@@ -176,11 +162,6 @@ class DataBaseActivity : BaseActivity() {
 
         adapter.phoneBook = usersPhoneBook
         adapter.notifyDataSetChanged()
-
-        /*usersPhoneBook = getDataFromDb()
-        adapter.phoneBook = usersPhoneBook
-        Log.e("ups", usersPhoneBook[0].firstName)
-        adapter.notifyDataSetChanged()*/
 
         Toast.makeText(this,"Deleted",
             Toast.LENGTH_SHORT).show()
@@ -218,9 +199,8 @@ class DataBaseActivity : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
           if (requestCode == GALLERY) {
-              //photoFromGallery = data!!.data
               setUserImage(data!!.data)
-              Log.e("ups", data.data.toString())
+              Log.e("ups", "data from ActivityForResult: ${data.data.toString()}")
             }
         }
     }
