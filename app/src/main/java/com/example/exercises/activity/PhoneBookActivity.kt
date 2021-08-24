@@ -72,9 +72,9 @@ class PhoneBookActivity : BaseActivity() {
         }
         usersPhoneBook.sortWith(
             compareBy(
-                { it.firstName },
-                { it.lastName },
-                { it.phone }
+                { it.firstName.toLowerCase() },
+                { it.lastName.toLowerCase()  },
+                { it.phone.toLowerCase()  }
             )
         )
         return usersPhoneBook

@@ -26,6 +26,8 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import java.util.*
+import kotlin.collections.ArrayList
 
 class DataBaseActivity : BaseActivity() {
 
@@ -232,17 +234,17 @@ class DataBaseActivity : BaseActivity() {
                 usersPhoneBook.add(newUser)
                 usersPhoneBook.sortWith(
                     compareBy(
-                        { it.firstName },
-                        { it.lastName },
-                        { it.phone }
+                        { it.firstName.toLowerCase() },
+                        { it.lastName.toLowerCase()  },
+                        { it.phone.toLowerCase()  }
                     )
                 )
-                Log.e("ups", usersPhoneBook.toString())
+                Log.e("ups", usersPhoneBook[0].toString())
 
                 db.execSQL("DELETE FROM ${DataBaseHelper.TABLE_NAME}")
                 val values = ContentValues()
                 for (i in 0 until usersPhoneBook.size){
-                    values.put(DataBaseHelper.COLUMN_ID, usersPhoneBook[i].id)
+                    //values.put(DataBaseHelper.COLUMN_ID, usersPhoneBook[i].id)
                     values.put(DataBaseHelper.FIRST_NAME, usersPhoneBook[i].firstName)
                     values.put(DataBaseHelper.LAST_NAME, usersPhoneBook[i].lastName)
                     values.put(DataBaseHelper.PHONE, usersPhoneBook[i].phone)

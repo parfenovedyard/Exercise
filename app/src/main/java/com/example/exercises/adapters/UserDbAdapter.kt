@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.exercises.R
 import com.example.exercises.models.PhoneBookUser
+import java.util.*
+import kotlin.collections.ArrayList
 
 class UserDbAdapter (
      var phoneBook: ArrayList<PhoneBookUser>,
@@ -28,6 +30,7 @@ class UserDbAdapter (
         if (position == 0 || phoneBook[position].firstName[0] != phoneBook[position - 1].firstName[0]){
             holder.letter!!.visibility = View.VISIBLE
             holder.letter!!.text = phoneBook[position].firstName[0].toString()
+                .uppercase(Locale.getDefault())
         }else{
             holder.letter!!.visibility = View.GONE
         }
