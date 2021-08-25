@@ -10,6 +10,7 @@ import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
@@ -36,8 +37,7 @@ class DataBaseActivity : BaseActivity() {
     private lateinit var db: SQLiteDatabase
     private lateinit var mUser: PhoneBookUser
     private var usersPhoneBook: ArrayList<PhoneBookUser> = ArrayList()
-   // private var photoFromGallery: Uri? = null
-
+    private var KEY_COUNT = "COUNT"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +65,11 @@ class DataBaseActivity : BaseActivity() {
         binding.addUser.setOnClickListener {
             addUser()
         }
+
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
 
     }
 
