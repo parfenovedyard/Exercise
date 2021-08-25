@@ -25,7 +25,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:hint="@string/first_name" />
+                android:hint="@string/first_name"
+                android:textColor="@color/black"
+                android:autofillHints=""
+                android:inputType="" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -38,7 +41,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:hint="@string/last_name" />
+                android:hint="@string/last_name"
+                android:textColor="@color/black"
+                android:autofillHints=""
+                android:inputType="" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -51,7 +57,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:hint="@string/phone" />
+                android:hint="@string/phone"
+                android:textColor="@color/black"
+                android:autofillHints=""
+                android:inputType="" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
