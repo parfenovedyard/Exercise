@@ -15,5 +15,4 @@ open class BaseActivity: AppCompatActivity() {
             onBackPressed()
         }
     }
-
 }
